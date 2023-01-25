@@ -1,0 +1,476 @@
+openapi: 3.0.1
+info:
+  title: Loans API
+  description: API used to retrieve a users Loans
+  termsOfService: https://FirstData.com/
+  contact:
+    name: First Data Education
+    url: https://FirstData.com/
+  license:
+    name: First Data Education License
+    url: https://FirstData.com/
+  version: v1
+paths:
+  '/bal/api/v1/persons/{personId}/{role}/loans':
+    get:
+      tags:
+        - Loans
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: role
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Loan'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Get Loans
+  '/bal/api/v1/loans/{loanId}':
+    get:
+      tags:
+        - Loans
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loan'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Get Loan
+components:
+  schemas:
+    ProblemDetails:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        traceId:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+      additionalProperties:
+        type: object
+        additionalProperties: false
+    InterestRate:
+      type: object
+      properties:
+        actualRate:
+          type: number
+          format: double
+        currentRate:
+          type: number
+          format: double
+        originationRate:
+          type: number
+          format: double
+        type:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Amounts:
+      type: object
+      properties:
+        accruedInterestAmount:
+          type: number
+          format: double
+        currentBalanceAmount:
+          type: number
+          format: double
+        currentDueAmount:
+          type: number
+          format: double
+        originalLoanAmount:
+          type: number
+          format: double
+        outstandingPrincipalAmount:
+          type: number
+          format: double
+        payoffAmount:
+          type: number
+          format: double
+        tenDayPayoffAmount:
+          type: number
+          format: double
+      additionalProperties: false
+    Fees:
+      type: object
+      properties:
+        backEndPremium:
+          type: number
+          format: double
+        collectionFee:
+          type: number
+          format: double
+        forbearanceFee:
+          type: number
+          format: double
+        lateFee:
+          type: number
+          format: double
+        legalFee:
+          type: number
+          format: double
+        returnItemFee:
+          type: number
+          format: double
+      additionalProperties: false
+    Delinquency:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        date:
+          type: string
+          format: date-time
+          nullable: true
+        days:
+          type: integer
+          format: int64
+      additionalProperties: false
+    TimePeriod:
+      type: object
+      properties:
+        beginDate:
+          type: string
+          format: date-time
+          nullable: true
+        endDate:
+          type: string
+          format: date-time
+          nullable: true
+      additionalProperties: false
+    Phase:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        period:
+          $ref: '#/components/schemas/TimePeriod'
+      additionalProperties: false
+    Program:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        group:
+          type: string
+          nullable: true
+        subsidyType:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Claim:
+      type: object
+      properties:
+        reason:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+      additionalProperties: false
+    PersonRole:
+      enum:
+        - BORROWER
+        - COSIGNER
+        - ENDORSER
+        - STUDENT
+      type: string
+    Person:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        role:
+          $ref: '#/components/schemas/PersonRole'
+      additionalProperties: false
+    Lender:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        relationshipType:
+          type: string
+          nullable: true
+      additionalProperties: false
+    School:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        schoolSeparationDate:
+          type: string
+          format: date-time
+          nullable: true
+      additionalProperties: false
+    Guarantor:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    SCRA:
+      type: object
+      properties:
+        beginDate:
+          type: string
+          format: date-time
+          nullable: true
+        endDate:
+          type: string
+          format: date-time
+          nullable: true
+        isActive:
+          type: boolean
+      additionalProperties: false
+    AutoPay:
+      type: object
+      properties:
+        customerDesignatedAmount:
+          type: number
+          format: double
+        extractionAmount:
+          type: number
+          format: double
+        frequency:
+          type: string
+          nullable: true
+        isEnrolled:
+          type: boolean
+        nextExtractionDate:
+          type: string
+          format: date-time
+          nullable: true
+      additionalProperties: false
+    PaymentPlan:
+      type: object
+      properties:
+        ibrExpirationDate:
+          type: string
+          format: date-time
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        recertificationDate:
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+    Loan:
+      type: object
+      properties:
+        amounts:
+          $ref: '#/components/schemas/Amounts'
+        associatedPersons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Person'
+          nullable: true
+        autoPay:
+          $ref: '#/components/schemas/AutoPay'
+        chargeOffDate:
+          type: string
+          format: date-time
+          nullable: true
+        claim:
+          $ref: '#/components/schemas/Claim'
+        currentDueDate:
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        delinquency:
+          $ref: '#/components/schemas/Delinquency'
+        estimatedPayoffDate:
+          type: string
+          format: date-time
+          nullable: true
+        fees:
+          $ref: '#/components/schemas/Fees'
+        firstDisbursementDate:
+          type: string
+          format: date-time
+          nullable: true
+        firstPaymentDueDate:
+          type: string
+          format: date-time
+          nullable: true
+        guarantor:
+          $ref: '#/components/schemas/Guarantor'
+        hasPayAheadFlag:
+          type: boolean
+        id:
+          type: string
+          nullable: true
+        interestRate:
+          $ref: '#/components/schemas/InterestRate'
+        isArchived:
+          type: boolean
+        isChargedOff:
+          type: boolean
+          readOnly: true
+        isEligibleForRefund:
+          type: boolean
+        isFraud:
+          type: boolean
+        isInterestCurrentlySubsidized:
+          type: boolean
+          readOnly: true
+        isOverpaymentAllowed:
+          type: boolean
+        isTaxCertificationRequired:
+          type: boolean
+          readOnly: true
+        lenders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lender'
+          nullable: true
+        loanAspects:
+          type: array
+          items:
+            type: string
+          nullable: true
+        missedPayments:
+          type: integer
+          format: int64
+        paidOffDate:
+          type: string
+          format: date-time
+          nullable: true
+        paymentPlan:
+          $ref: '#/components/schemas/PaymentPlan'
+        payTogetherGroup:
+          type: string
+          nullable: true
+        pifgWithDCMSTransfer:
+          type: string
+          nullable: true
+        program:
+          $ref: '#/components/schemas/Program'
+        repaymentBeginDate:
+          type: string
+          format: date-time
+          nullable: true
+        school:
+          $ref: '#/components/schemas/School'
+        scra:
+          $ref: '#/components/schemas/SCRA'
+        servicingStartDate:
+          type: string
+          format: date-time
+          nullable: true
+        statementDate:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          $ref: '#/components/schemas/Phase'
+        subStatus:
+          $ref: '#/components/schemas/Phase'
+      additionalProperties: false
+x-error-codes:
+  GBL4000:
+    Title: Invalid request.
+  GBL4004:
+    Title: Person not found.
+  GBL5000:
+    Title: An unexpected error was encountered.
+  GBL5003:
+    Title: System not available.
+  GBL5004:
+    Title: Client ID not authorized to update information on the person.

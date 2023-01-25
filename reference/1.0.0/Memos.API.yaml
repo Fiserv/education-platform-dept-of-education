@@ -1,0 +1,101 @@
+openapi: 3.0.1
+info:
+  title: Memo
+  description: The Memos REST API adds a memo for a specific loan id and valid code value. The description should not be sent for predefined memos. For memos that are not predefined a description needs to be sent. Your business area should have a list of valid values that can be sent.
+  version: v1
+paths:
+  '/bal/api/v1/loans/{loanId}/memos':
+    post:
+      tags:
+        - Memos
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Memo'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/Memo'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/Memo'
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Submit Memo
+components:
+  schemas:
+    Memo:
+      required:
+        - code
+      type: object
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        traceId:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+      additionalProperties:
+        type: object
+        additionalProperties: false
+x-error-codes:
+  GBL4000:
+    Title: Invalid request.
+  GBL4004:
+    Title: Person not found.
+  GBL5000:
+    Title: An unexpected error was encountered.
+  GBL5003:
+    Title: System not available.
+  GBL5004:
+    Title: Client ID not authorized to update information on the person.
