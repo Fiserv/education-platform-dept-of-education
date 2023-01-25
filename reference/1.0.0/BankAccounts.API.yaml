@@ -1,0 +1,498 @@
+openapi: 3.0.1
+info:
+  title: bank-accounts
+  description: 'Bank Accounts REST API used to Retrieve, Add, and Delete Bank Accounts for the Customer as well as validate bank account and routing number. When adding a new bank account account number, routing number, and type(Checking, Savings) are required. When deleting an account, personid and id are required.'
+  termsOfService: https://FirstData.com/
+  contact:
+    name: First Data Education
+    url: https://FirstData.com/
+  license:
+    name: First Data Education License
+    url: https://FirstData.com/
+  version: v1
+paths:
+  '/bal/api/v1/persons/{personId}/bank-accounts':
+    get:
+      tags:
+        - BankAccounts
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankAccount'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Get all Bank Accounts
+    post:
+      tags:
+        - BankAccounts
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddBankAccount'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AddBankAccount'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AddBankAccount'
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '201':
+          description: Success
+          headers:
+            Location:
+              description: Location of the newly created resource
+              schema:
+                type: string
+                description: Location of the newly created resource
+                format: ''
+      x-proxy-name: Add a Bank Account
+  '/bal/api/v1/persons/{personId}/bank-accounts/{id}':
+    get:
+      tags:
+        - BankAccounts
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankAccount'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Get Bank Account by id
+    delete:
+      tags:
+        - BankAccounts
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '204':
+          description: Success
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Delete a Bank Account
+  /bal/api/v1/bank-accounts/validate/routing-number:
+    get:
+      tags:
+        - BankAccounts
+      parameters:
+        - name: RoutingNumber
+          in: query
+          required: true
+          schema:
+            maxLength: 9
+            minLength: 9
+            pattern: '([0-9]+)'
+            type: string
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Validate Routing Number
+  /bal/api/v1/bank-accounts/validate/bank-account:
+    get:
+      tags:
+        - BankAccounts
+      parameters:
+        - name: AccountNumber
+          in: query
+          required: true
+          schema:
+            minLength: 4
+            pattern: '([0-9]+)'
+            type: string
+        - name: RoutingNumber
+          in: query
+          required: true
+          schema:
+            maxLength: 9
+            minLength: 9
+            pattern: '([0-9]+)'
+            type: string
+        - name: Type
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/BankAccountType'
+        - name: SSN
+          in: query
+          schema:
+            type: string
+            nullable: true
+        - name: Client
+          in: query
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Validate Bank Account
+  /bal/validationscore:
+    post:
+      tags:
+        - BankAccounts
+      parameters:
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddBankAccount'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AddBankAccount'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AddBankAccount'
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankingValidationResponse'
+      x-proxy-name: Validating  a Bank Account By TeleCheck Score
+components:
+  schemas:
+    ProblemDetails:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        traceId:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+      additionalProperties:
+        type: object
+        additionalProperties: false
+    BankAccountType:
+      enum:
+        - Checking
+        - Savings
+      type: string
+    BankAccount:
+      type: object
+      properties:
+        accountNumber:
+          type: string
+          nullable: true
+        enrolledLoans:
+          type: array
+          items:
+            type: string
+          nullable: true
+        id:
+          type: string
+          nullable: true
+          readOnly: true
+        isAutoPayEnrolled:
+          type: boolean
+        lastUsedDate:
+          type: string
+          format: date-time
+          nullable: true
+        nameOfBank:
+          type: string
+          nullable: true
+        routingNumber:
+          type: string
+          nullable: true
+        type:
+          $ref: '#/components/schemas/BankAccountType'
+      additionalProperties: false
+    AddBankAccount:
+      required:
+        - accountNumber
+        - routingNumber
+        - type
+      type: object
+      properties:
+        accountNumber:
+          minLength: 4
+          pattern: '([0-9]+)'
+          type: string
+        client:
+          type: string
+          nullable: true
+        routingNumber:
+          maxLength: 9
+          minLength: 9
+          pattern: '([0-9]+)'
+          type: string
+        ssn:
+          type: string
+          nullable: true
+        type:
+          $ref: '#/components/schemas/BankAccountType'
+      additionalProperties: false
+    BaseBankAccount:
+      type: object
+      properties:
+        accountNumber:
+          type: string
+          nullable: true
+        routingNumber:
+          type: string
+          nullable: true
+        type:
+          $ref: '#/components/schemas/BankAccountType'
+      additionalProperties: false
+    Response:
+      type: object
+      properties:
+        bankAccount:
+          $ref: '#/components/schemas/BaseBankAccount'
+        hasNoticeOfChange:
+          type: boolean
+        isValid:
+          type: boolean
+      additionalProperties: false
+    BankingValidationResponse:
+      type: object
+      properties:
+        approvalCode:
+          type: string
+          nullable: true
+        dateAndTime:
+          type: string
+          nullable: true
+        denialRecordNumber:
+          type: string
+          nullable: true
+        displayText:
+          type: string
+          nullable: true
+        echoData:
+          type: string
+          nullable: true
+        historyCode:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+        responseCode:
+          type: string
+          nullable: true
+        responseCodeDefinition:
+          type: string
+          nullable: true
+        score:
+          type: string
+          nullable: true
+        scoreExplanation:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+        traceID:
+          type: string
+          nullable: true
+      additionalProperties: false
+x-error-codes:
+  BNK4000:
+    Title: Bank account id is missing from request.
+  BNK4001:
+    Title: Bank account is required.
+  BNK4004:
+    Title: Bank account record not found.
+  BNK5000:
+    Title: Routing number is not valid.
+  BNK5001:
+    Title: Account Number and Routing Number combination is not valid.
+  BNK5002:
+    Title: Delete not allowed. Bank Account is enrolled in Auto Pay.
+  GBL4000:
+    Title: Invalid request.
+  GBL4004:
+    Title: Person not found.
+  GBL5000:
+    Title: An unexpected error was encountered.
+  GBL5003:
+    Title: System not available.
+  GBL5004:
+    Title: Client ID not authorized to update information on the person.

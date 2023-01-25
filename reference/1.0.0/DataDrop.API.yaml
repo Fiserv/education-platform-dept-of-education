@@ -1,0 +1,163 @@
+openapi: 3.0.1
+info:
+  title: Data Drop
+  description: API used to dropoff and pickup a payload.
+  termsOfService: https://FirstData.com/
+  contact:
+    name: First Data Education
+    url: https://FirstData.com/
+  license:
+    name: First Data Education License
+    url: https://FirstData.com/
+  version: v1
+paths:
+  /bal/api/v1/utilities/data-drop:
+    post:
+      tags:
+        - DataDrop
+      parameters:
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataDrop'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DataDrop'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DataDrop'
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: PostAsync DataDrop
+  '/bal/api/v1/utilities/data-drop/{guid}':
+    delete:
+      tags:
+        - DataDrop
+      parameters:
+        - name: guid
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataDrop'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: DeleteAsync DataDrop
+components:
+  schemas:
+    DataDrop:
+      required:
+        - destination
+        - message
+        - source
+      type: object
+      properties:
+        destination:
+          type: string
+        message:
+          type: object
+          additionalProperties: false
+          description: DataDrop Record Payload
+        source:
+          type: string
+        timeToLiveInSeconds:
+          maximum: 3600
+          minimum: 0
+          type: integer
+          format: int32
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        traceId:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+      additionalProperties:
+        type: object
+        additionalProperties: false
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: http://nwnifieil120.us.ad.usa-ed.net/authorizationdev/connect/token
+          scopes: { }
+x-error-codes:
+  DDU4004:
+    Title: Data not found.
+  GBL4000:
+    Title: Invalid request.
+  GBL4004:
+    Title: Person not found.
+  GBL5000:
+    Title: An unexpected error was encountered.
+  GBL5003:
+    Title: System not available.
+  GBL5004:
+    Title: Client ID not authorized to update information on the person.

@@ -1,0 +1,112 @@
+openapi: 3.0.1
+info:
+  title: DelinquentCycles
+  description: The DelinquentCycles REST API is used to retrieve all delinquent cycles.
+  version: v1
+paths:
+  '/bal/api/v1/delinquentcycles/{personId}':
+    get:
+      tags:
+        - DelinquentCycles
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DelinquentCycles'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DelinquentCycles'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DelinquentCycles'
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Get Delinquent Cycles
+components:
+  schemas:
+    ProblemDetails:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        traceId:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+      additionalProperties:
+        type: object
+        additionalProperties: false
+    DelinquentCycles:
+      type: object
+      properties:
+        amounts:
+          type: array
+          items:
+            type: number
+            format: double
+          nullable: true
+        cycleSevenAndGreaterAmount:
+          type: number
+          format: double
+        loanId:
+          type: string
+          nullable: true
+      additionalProperties: false
