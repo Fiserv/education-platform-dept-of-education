@@ -1,0 +1,428 @@
+openapi: 3.0.1
+info:
+  title: financial-transactions
+  description: API used to retrieve Financial Transactions for the Customer.
+  termsOfService: https://FirstData.com/
+  contact:
+    name: First Data Education
+    url: https://FirstData.com/
+  license:
+    name: First Data Education License
+    url: https://FirstData.com/
+  version: v1
+paths:
+  '/bal/api/v1/persons/{personId}/financial-transactions':
+    get:
+      tags:
+        - FinancialTransactions
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: Offset
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: Limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: filterFinTranType
+          in: query
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Page`1'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page`1'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Page`1'
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Get Financial Transactions
+  '/bal/api/v1/persons/{personId}/financial-transactions/{type}':
+    get:
+      tags:
+        - FinancialTransactions
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: Offset
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: Limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: filterFinTranType
+          in: query
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Page`1'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page`1'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Page`1'
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Get Financial Transactions by Type
+  '/bal/api/v1/persons/{personId}/financial-transactions/loans/{loanId}':
+    get:
+      tags:
+        - FinancialTransactions
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: loanId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: Offset
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: Limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+        - name: filterFinTranType
+          in: query
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Page`1'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page`1'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Page`1'
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Get Financial Transactions by Loan
+components:
+  schemas:
+    ProblemDetails:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        traceId:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+      additionalProperties:
+        type: object
+        additionalProperties: false
+    TransactionTypes:
+      enum:
+        - Payment
+        - Adjustment
+        - Consolidation
+        - Disbursement
+        - Refund
+        - Cancellation
+        - Return
+      type: string
+    Fees:
+      type: object
+      properties:
+        collectionFee:
+          type: number
+          format: double
+        forbearanceFee:
+          type: number
+          format: double
+        lateFee:
+          type: number
+          format: double
+        legalFee:
+          type: number
+          format: double
+        returnItemFee:
+          type: number
+          format: double
+      additionalProperties: false
+    FinancialTransactionDetail:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        fees:
+          $ref: '#/components/schemas/Fees'
+        interestAmount:
+          type: number
+          format: double
+        loanId:
+          type: string
+          nullable: true
+        principalAmount:
+          type: number
+          format: double
+      additionalProperties: false
+    FinancialTransaction:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+          readOnly: true
+        description:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/FinancialTransactionDetail'
+          nullable: true
+        effectiveDate:
+          type: string
+          format: date-time
+          nullable: true
+        fees:
+          $ref: '#/components/schemas/Fees'
+        interestAmount:
+          type: number
+          format: double
+          readOnly: true
+        postedDate:
+          type: string
+          format: date-time
+          nullable: true
+        principalAmount:
+          type: number
+          format: double
+          readOnly: true
+        transactionCode:
+          type: string
+          nullable: true
+        type:
+          $ref: '#/components/schemas/TransactionTypes'
+      additionalProperties: false
+    Page`1:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FinancialTransaction'
+          nullable: true
+        endDate:
+          type: string
+          format: date-time
+        limit:
+          type: integer
+          format: int32
+        offset:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        totalCount:
+          type: integer
+          format: int32
+      additionalProperties: false
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: http://nwnifieil120.us.ad.usa-ed.net/authorizationdev/connect/token
+          scopes: { }
+x-error-codes:
+  FIN4000:
+    Title: Invalid date range.
+  GBL4000:
+    Title: Invalid request.
+  GBL4004:
+    Title: Person not found.
+  GBL5000:
+    Title: An unexpected error was encountered.
+  GBL5003:
+    Title: System not available.
+  GBL5004:
+    Title: Client ID not authorized to update information on the person.
