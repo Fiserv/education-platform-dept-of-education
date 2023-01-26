@@ -1,0 +1,348 @@
+openapi: 3.0.1
+info:
+  title: payments
+  description: 'API used to Retrieve, Submit and Cancel Payments for the Customer'
+  termsOfService: https://FirstData.com/
+  contact:
+    name: First Data Education
+    url: https://FirstData.com/
+  license:
+    name: First Data Education License
+    url: https://FirstData.com/
+  version: v1
+paths:
+  '/bal/api/v1/persons/{personId}/payments':
+    get:
+      tags:
+        - Payments
+      operationId: GetPayments
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Get Payments
+    post:
+      tags:
+        - Payments
+      operationId: PostPayments
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '201':
+          description: Success
+          headers:
+            Location:
+              description: Location of the newly created resource
+              schema:
+                type: string
+                description: Location of the newly created resource
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+      x-proxy-name: Submit Payments
+  '/bal/api/v1/persons/{personId}/payments/{confirmationNumber}':
+    delete:
+      tags:
+        - Payments
+      operationId: DeletePayment
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: confirmationNumber
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: X-Correlation-ID
+          in: header
+          description: Correlation Id for the request
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-proxy-name: Delete Payment
+components:
+  schemas:
+    ProblemDetails:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        traceId:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+      additionalProperties:
+        type: object
+        additionalProperties: false
+    PayerRole:
+      enum:
+        - Borrower
+        - Cosigner
+        - Endorser
+        - ThirdParty
+      type: string
+    PaymentAllocation:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        loanGroupId:
+          type: string
+          nullable: true
+        loanId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    PaymentBankAccount:
+      type: object
+      properties:
+        accountNumber:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Payment:
+      type: object
+      properties:
+        allocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentAllocation'
+          nullable: true
+        amount:
+          type: number
+          format: double
+        bankAccount:
+          $ref: '#/components/schemas/PaymentBankAccount'
+        confirmationNumber:
+          type: string
+          nullable: true
+        effectiveDate:
+          type: string
+          format: date-time
+          nullable: true
+        isAutoDebit:
+          type: boolean
+        isCancelAllowed:
+          type: boolean
+        payerRole:
+          $ref: '#/components/schemas/PayerRole'
+        status:
+          type: string
+          nullable: true
+      additionalProperties: false
+    BankAccountType:
+      enum:
+        - Checking
+        - Savings
+      type: string
+    BankAccount:
+      required:
+        - accountNumber
+        - routingNumber
+        - type
+      type: object
+      properties:
+        accountNumber:
+          minLength: 4
+          pattern: '([0-9]+)'
+          type: string
+        routingNumber:
+          maxLength: 9
+          minLength: 9
+          pattern: '([0-9]+)'
+          type: string
+        type:
+          $ref: '#/components/schemas/BankAccountType'
+      additionalProperties: false
+    RequestAllocation:
+      required:
+        - loanId
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        isInstructionToAdvanceDueDate:
+          type: boolean
+          nullable: true
+        loanId:
+          pattern: '([0-9]+)'
+          type: string
+      additionalProperties: false
+    InstructionSelectionType:
+      enum:
+        - Saved
+        - OneTime
+        - Selected
+        - Defaulted
+      type: string
+    PaymentRequest:
+      required:
+        - allocations
+        - bankAccount
+        - effectiveDate
+      type: object
+      properties:
+        allocationInstruction:
+          type: string
+          nullable: true
+        allocationInstructionSelection:
+          $ref: '#/components/schemas/InstructionSelectionType'
+        allocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestAllocation'
+        bankAccount:
+          $ref: '#/components/schemas/BankAccount'
+        effectiveDate:
+          type: string
+          format: date-time
+        isOtherPayer:
+          type: boolean
+        paymentFlow:
+          type: string
+          nullable: true
+      additionalProperties: false
+    PaymentResponse:
+      type: object
+      properties:
+        hasNoticeOfChange:
+          type: boolean
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+          nullable: true
+      additionalProperties: false
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: http://nwnifieil120.us.ad.usa-ed.net/authorizationdev/connect/token
+          scopes: { }
+x-error-codes:
+  PAY4000:
+    Title: Confirmation number is missing from request.
+  PAY4001:
+    Title: Invalid Loan Id(s) in request allocations.
+  PAY4002:
+    Title: At least one allocation should have an amount greater than zero.
+  PAY5000:
+    Title: Cancelling the Payment is not allowed.
+  GBL4000:
+    Title: Invalid request.
+  GBL4004:
+    Title: Person not found.
+  GBL5000:
+    Title: An unexpected error was encountered.
+  GBL5003:
+    Title: System not available.
+  GBL5004:
+    Title: Client ID not authorized to update information on the person.
