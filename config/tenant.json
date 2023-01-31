@@ -10,7 +10,7 @@
         "version": "1.0.0",
         "versionType": "major",
         "releaseNotesPath": "docs/release-notes/2022/march.md",
-        "apiSpecFileNames": ["Addresses.API", "BankAccounts.API", "DataDrop.API", "DelinquentCycles.API", "Documents.API_v1", "Emails.API", "FinancialTransactions.API", "LoanDetails.API", "Loans.API", "Memos.API", "LoanBenefits.API", "Payments.API", "Permissions.API", "Persons.API", "MilitaryBenefits.API", "TaxData.API", "Phones.API", "Preferences.API"]
+        "apiSpecFileNames": ["Addresses.API", "Authorizations.API", "BankAccounts.API", "DataDrop.API", "DelinquentCycles.API", "Documents.API_v1", "Emails.API", "FinancialTransactions.API", "LoanDetails.API", "Loans.API", "Memos.API", "LoanBenefits.API", "Payments.API", "Permissions.API", "Persons.API", "MilitaryBenefits.API", "TaxData.API", "Phones.API", "Preferences.API"]
       }
   ],
   "product": {
