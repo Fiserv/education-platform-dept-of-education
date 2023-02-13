@@ -29,7 +29,7 @@
 ################################################################################
 header:
   productName: REPLACEME
-  productionDescription: REPLACEME
+  productionDescription: "productDescription"
   whoIsItFor: REPLACEME
   image: 
     link: "/assets/images/Fiserv_Logo.jpg"
