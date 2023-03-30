@@ -11,7 +11,7 @@ info:
     url: https://FirstData.com/
   version: v1
 paths:
-  '/bal/api/v1/persons/{personId}/payments':
+  '/api/v1/persons/{personId}/payments':
     get:
       tags:
         - Payments
@@ -104,7 +104,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentResponse'
       x-proxy-name: Submit Payments
-  '/bal/api/v1/persons/{personId}/payments/{confirmationNumber}':
+  '/api/v1/persons/{personId}/payments/{confirmationNumber}':
     delete:
       tags:
         - Payments
