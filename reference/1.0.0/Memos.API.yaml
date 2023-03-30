@@ -4,7 +4,7 @@ info:
   description: The Memos REST API adds a memo for a specific loan id and valid code value. The description should not be sent for predefined memos. For memos that are not predefined a description needs to be sent. Your business area should have a list of valid values that can be sent.
   version: v1
 paths:
-  '/bal/api/v1/loans/{loanId}/memos':
+  '/api/v1/loans/{loanId}/memos':
     post:
       tags:
         - Memos
