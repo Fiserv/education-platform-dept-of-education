@@ -4,7 +4,7 @@ info:
   description: The DelinquentCycles REST API is used to retrieve all delinquent cycles.
   version: v1
 paths:
-  '/bal/api/v1/delinquentcycles/{personId}':
+  '/api/v1/delinquentcycles/{personId}':
     get:
       tags:
         - DelinquentCycles
