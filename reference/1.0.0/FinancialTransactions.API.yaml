@@ -11,7 +11,7 @@ info:
     url: https://FirstData.com/
   version: v1
 paths:
-  '/bal/api/v1/persons/{personId}/financial-transactions':
+  '/api/v1/persons/{personId}/financial-transactions':
     get:
       tags:
         - FinancialTransactions
@@ -92,7 +92,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
       x-proxy-name: Get Financial Transactions
-  '/bal/api/v1/persons/{personId}/financial-transactions/{type}':
+  '/api/v1/persons/{personId}/financial-transactions/{type}':
     get:
       tags:
         - FinancialTransactions
@@ -179,7 +179,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
       x-proxy-name: Get Financial Transactions by Type
-  '/bal/api/v1/persons/{personId}/financial-transactions/loans/{loanId}':
+  '/api/v1/persons/{personId}/financial-transactions/loans/{loanId}':
     get:
       tags:
         - FinancialTransactions
