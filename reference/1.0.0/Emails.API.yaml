@@ -11,7 +11,7 @@ info:
     url: https://FirstData.com/
   version: v1
 paths:
-  '/bal/api/v1/persons/{personId}/emails':
+  '/api/v1/persons/{personId}/emails':
     get:
       tags:
         - Emails
@@ -108,7 +108,7 @@ paths:
                 description: Location of the newly created resource
                 format: ''
       x-proxy-name: Add Email
-  '/bal/api/v1/persons/{personId}/emails/{emailId}':
+  '/api/v1/persons/{personId}/emails/{emailId}':
     put:
       tags:
         - Emails
