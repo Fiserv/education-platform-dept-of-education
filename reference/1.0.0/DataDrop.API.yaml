@@ -11,7 +11,7 @@ info:
     url: https://FirstData.com/
   version: v1
 paths:
-  /bal/api/v1/utilities/data-drop:
+  /api/v1/utilities/data-drop:
     post:
       tags:
         - DataDrop
@@ -48,7 +48,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
       x-proxy-name: PostAsync DataDrop
-  '/bal/api/v1/utilities/data-drop/{guid}':
+  '/api/v1/utilities/data-drop/{guid}':
     delete:
       tags:
         - DataDrop
