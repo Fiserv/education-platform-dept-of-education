@@ -11,7 +11,7 @@ info:
     url: https://FirstData.com/
   version: v1
 paths:
-  '/bal/api/v1/loanbenefits/{personId}':
+  '/api/v1/loanbenefits/{personId}':
     get:
       tags:
         - LoanBenefits
@@ -71,7 +71,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
       x-proxy-name: Get Loan Benefits
-  '/bal/api/v1/loanbenefits/{personId}/{loanId}':
+  '/api/v1/loanbenefits/{personId}/{loanId}':
     get:
       tags:
         - LoanBenefits
