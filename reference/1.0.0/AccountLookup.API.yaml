@@ -1,0 +1,77 @@
+openapi: 3.0.1
+info:
+  title: AccountLookup.API
+  version: '1.0'
+paths:
+  /api/v1/persons/account-lookup:
+    post:
+      tags:
+        - AccountLookup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonLookup'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PersonLookup'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/PersonLookup'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonLookup'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+components:
+  schemas:
+    IdType:
+      enum:
+        - SocialSecurityNumber
+        - CustomerIdentificationNumber
+      type: string
+    PersonLookup:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        idType:
+          $ref: '#/components/schemas/IdType'
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+      additionalProperties: { }
