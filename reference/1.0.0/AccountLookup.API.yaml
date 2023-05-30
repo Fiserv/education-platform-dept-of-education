@@ -39,6 +39,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
+  x-proxy-name: Person Lookup
 components:
   schemas:
     IdType:
@@ -74,4 +75,3 @@ components:
         instance:
           type: string
           nullable: true
-      additionalProperties: { }
