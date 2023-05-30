@@ -3,7 +3,7 @@ info:
   title: AccountLookup.API
   version: '1.0'
 paths:
-  /api/v1/persons/account-lookup:
+  '/api/v1/persons/account-lookup':
     post:
       tags:
         - AccountLookup
